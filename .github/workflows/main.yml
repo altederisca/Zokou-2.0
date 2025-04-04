@@ -1,0 +1,30 @@
+name: Deploy Zokou
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cloner le repo
+        uses: actions/checkout@v3
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Installer les dépendances
+        run: npm install
+
+      - name: Lancer le bot
+        env:
+          OWNER_NUMBER: ${{ secrets.OWNER_NUMBER }}
+          SESSION_ID: ${{ secrets.SESSION_ID }}
+          MONGODB_URL: ${{ secrets.MONGODB_URL }}
+          PREFIX: "!"
+          PORT: "8000"
+        run: |
+          node index.js
